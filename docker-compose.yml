@@ -1,0 +1,29 @@
+version: '20'
+
+services:
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/Nginx.DockerFile
+        ports:
+            - 8098:80
+        links:
+            - fpm
+        volumes:
+            - ./:/var/www/ws-tools
+    fpm:
+        build:
+            context: .
+            dockerfile: docker/Fpm.DockerFile
+        volumes:
+            - ./:/var/www/ws-tools
+        links:
+            - mysql
+    mysql:
+        image: mysql:8.0
+        ports:
+            - 33061:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=ws-tools
+
