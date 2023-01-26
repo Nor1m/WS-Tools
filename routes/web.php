@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Tools\ServerResponseController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group(['prefix' => 'tools'], function () {
+
+    // Show routes
+    Route::get('/server-response', [ServerResponseController::class, 'show'])->name('tools.show.server-response');
+
+    // Run routes
+    Route::get('/run/server-response', [ServerResponseController::class, 'run'])->name('tools.run.server-response');
+
 });
