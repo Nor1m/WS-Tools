@@ -67,9 +67,14 @@ class ServerResponseToolTest extends TestCase
                     'url' => 'http://google.com',
                 ],
             ],
-            'yandex' => [
+            'google_with_protocol_https' => [
                 [
-                    'url' => 'yandex.ru',
+                    'url' => 'https://google.com',
+                ],
+            ],
+            'google_with_protocol_with_params' => [
+                [
+                    'url' => 'https://google.com?q=test',
                 ],
             ],
         ];
