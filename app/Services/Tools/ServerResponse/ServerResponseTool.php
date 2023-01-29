@@ -46,7 +46,7 @@ class ServerResponseTool implements ServerResponseToolInterface
 
     protected function prepareUrl(string $url): string
     {
-        return addProtocolIfNotExists($url);
+        return addProtocolIfNotExists(punycodeEncode($url));
     }
 
     protected function startCurlParsing(string $url): void
