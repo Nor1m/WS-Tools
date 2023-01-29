@@ -12,7 +12,7 @@ class ServerResponseToolTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->routeName = 'tools.run.server-response';
+        $this->routeName = 'tools.run.server_response';
     }
 
     /**
@@ -57,9 +57,24 @@ class ServerResponseToolTest extends TestCase
     public function runCorrectDataProvider(): array
     {
         return [
-            'google' => [
+            'cyrillic' => [
                 [
-                    'url' => 'google.com',
+                    'url' => 'яндекс.рф',
+                ],
+            ],
+            'cyrillic_with_params' => [
+                [
+                    'url' => 'яндекс.рф?q=test',
+                ],
+            ],
+            'cyrillic_with_slash' => [
+                [
+                    'url' => 'яндекс.рф/company',
+                ],
+            ],
+            'google_with_slash' => [
+                [
+                    'url' => 'google.com/company',
                 ],
             ],
             'google_with_protocol_http' => [

@@ -1,8 +1,10 @@
 <?php
 
 if(!function_exists('toolSettings')) {
-    function toolSettings(string $tool, string $key, mixed $default = null): mixed
+    function toolSettings(string $tool = null, string $key = null, mixed $default = null): mixed
     {
-        return config("tools_settings.tools.{$tool}.{$key}", $default);
+        $tool = $tool ? ".{$tool}" : "";
+        $key = $key ? ".{$key}" : "";
+        return config("tools_settings.tools{$tool}{$key}", $default);
     }
 }

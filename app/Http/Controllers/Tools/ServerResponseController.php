@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 
 class ServerResponseController extends Controller
 {
+    private string $toolKey = 'server_response';
     private ServerResponseToolInterface $toolService;
     private ToolJsonResponseInterface $responseService;
 
@@ -40,6 +41,9 @@ class ServerResponseController extends Controller
 
     public function show(): \Illuminate\Contracts\View\View
     {
-        return View::make('panel.tools.server.server-response');
+        return View::make('panel.tools.server.server_response', [
+            'title' => __(toolSettings($this->toolKey, 'title')),
+            'icon' => toolSettings($this->toolKey, 'icon'),
+        ]);
     }
 }
