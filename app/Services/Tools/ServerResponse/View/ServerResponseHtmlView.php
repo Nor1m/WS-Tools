@@ -10,7 +10,7 @@ class ServerResponseHtmlView implements ServerResponseHtmlViewInterface
 
     public function response(ServerResponseResultDTO $dto): string
     {
-        $viewKey = toolSettings($this->toolKey, 'view_path', '');
+        $viewKey = toolSettings($this->toolKey, 'items_view_path', '');
         $maxUrlLen = toolSettings($this->toolKey, 'max_url_len', 30);
         $items = [];
 

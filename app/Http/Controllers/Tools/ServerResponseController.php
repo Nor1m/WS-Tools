@@ -47,7 +47,8 @@ class ServerResponseController extends Controller
 
     public function show(): \Illuminate\Contracts\View\View
     {
-        return View::make('panel.tools.server.server_response', [
+        $view = toolSettings($this->toolKey, 'page_view_path');
+        return View::make($view, [
             'title' => __(toolSettings($this->toolKey, 'title')),
             'icon' => toolSettings($this->toolKey, 'icon'),
         ]);

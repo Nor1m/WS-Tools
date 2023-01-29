@@ -11,7 +11,8 @@ return [
             'max_curl_requests' => 15,
             'curl_redirects_codes' => [301,302,303],
             'max_url_len' => 30,
-            'view_path' => 'panel.tools.server.parts.server-response-items'
+            'items_view_path' => 'panel.tools.server.parts.server-response-items',
+            'page_view_path' => 'panel.tools.server.server_response',
         ]
 
     ],
