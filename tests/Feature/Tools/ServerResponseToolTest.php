@@ -25,15 +25,10 @@ class ServerResponseToolTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(fn (AssertableJson $json) =>
             $json->hasAll(['status', 'data', 'message', 'code'])
-                ->has('data.totalTime')->whereType('data.totalTime', 'double')
-                ->has('data.primaryIp')->whereType('data.primaryIp', 'string')
-                ->has('data.localIp')->whereType('data.localIp', 'string')
-                ->has('data.contentType')->whereType('data.contentType', 'string')
-                ->has('data.curlServerResponses')->whereType('data.curlServerResponses', 'array')
-                ->has('data.curlServerResponses.0.url')->whereType('data.curlServerResponses.0.url', 'string')
-                ->has('data.curlServerResponses.0.httpCode')->whereType('data.curlServerResponses.0.httpCode', 'integer')
-                ->has('data.curlServerResponses.0.response')->whereType('data.curlServerResponses.0.response', 'string')
-                ->has('data.curlServerResponses.0.totalTime')->whereType('data.curlServerResponses.0.totalTime', 'double')
+                ->where('status', 'success')
+                ->whereType('data.resultHtml', 'string')
+                ->where('message', '')
+                ->where('code', 200)
         );
     }
 
