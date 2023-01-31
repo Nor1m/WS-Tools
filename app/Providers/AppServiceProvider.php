@@ -35,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ServerResponseToolInterface::class, ServerResponseTool::class);
         $this->app->bind(ToolJsonResponseInterface::class, ToolJsonResponse::class);
         $this->app->bind(ServerResponseHtmlViewInterface::class, ServerResponseHtmlView::class);
-        $this->app->bind(HttpRequest::class, CurlRequest::class);
+        $this->app->bind(HttpRequest::class, function ($app, $args){
+            return new CurlRequest(...$args);
+        });
     }
 }

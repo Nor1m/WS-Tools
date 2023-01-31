@@ -42,7 +42,6 @@ class ServerResponseHtmlView implements ServerResponseHtmlViewInterface
             'totalTime' => $totalTime,
             'primaryIp' => $dto->primaryIp,
             'localIp' => $dto->localIp,
-            'contentType' => $dto->contentType,
             'items' => $items,
             'count' => count($items),
         ])->render();

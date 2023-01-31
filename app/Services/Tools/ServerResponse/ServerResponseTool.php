@@ -3,8 +3,8 @@
 namespace App\Services\Tools\ServerResponse;
 
 use App\Exceptions\Tools\ToolServerException;
+use App\Services\Http\HttpRequest\HttpRequest;
 use App\Services\Utils\UrlService;
-use CurlHandle;
 
 class ServerResponseTool implements ServerResponseToolInterface
 {
@@ -39,7 +39,6 @@ class ServerResponseTool implements ServerResponseToolInterface
             totalTime: $this->totalTime,
             primaryIp: $this->baseServerInfo['primary_ip'],
             localIp: $this->baseServerInfo['local_ip'],
-            contentType: $this->baseServerInfo['content_type'],
             curlServerResponses: $this->curlServerResponses,
         );
     }
@@ -51,31 +50,33 @@ class ServerResponseTool implements ServerResponseToolInterface
 
     protected function startCurlParsing(string $url): void
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        $this->curlRedirectWalk($ch, $url);
-        curl_exec($ch);
-        $info = curl_getinfo($ch);
+        $httpRequest = app(HttpRequest::class, [$url]);
+        $httpRequest->setOption(CURLOPT_NOBODY, true);
+        $httpRequest->setOption(CURLOPT_URL, $url);
+        $httpRequest->setOption(CURLOPT_TIMEOUT, 10);
+
+        $this->curlRedirectWalk($httpRequest, $url);
+
+        $httpRequest->exec();
+
+        $info = $httpRequest->getInfo();
 
         $this->baseServerInfo = [
             'primary_ip' => $info['primary_ip'],
             'local_ip' => $info['local_ip'],
-            'content_type' => $info['content_type'],
         ];
 
-        curl_close($ch);
+        $httpRequest->close();
     }
 
-    protected function curlRedirectWalk(CurlHandle $ch, string $url): void
+    protected function curlRedirectWalk(HttpRequest $httpRequest, string $url): void
     {
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $httpRequest->setOption(CURLOPT_NOBODY, true);
+        $httpRequest->setOption(CURLOPT_HEADER, true);
+        $httpRequest->setOption(CURLOPT_RETURNTRANSFER, true);
 
-        $header = curl_exec($ch);
-        $info = curl_getinfo($ch);
+        $header = $httpRequest->exec();
+        $info = $httpRequest->getInfo();
 
         $httpCode = $info['http_code'];
         $this->totalTime += $info['total_time'];
@@ -93,8 +94,8 @@ class ServerResponseTool implements ServerResponseToolInterface
             if ($this->curlLoops != $this->maxCurlRequests) {
                 $this->curlLoops += 1;
                 $nextUrl = $this->getNextCurlUrl($locationUrl, $info['redirect_url']);
-                curl_setopt($ch, CURLOPT_URL, $nextUrl);
-                $this->curlRedirectWalk($ch, $nextUrl);
+                $httpRequest->setOption(CURLOPT_URL, $nextUrl);
+                $this->curlRedirectWalk($httpRequest, $nextUrl);
             }
         }
     }
