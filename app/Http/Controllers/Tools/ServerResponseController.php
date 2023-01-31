@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Tools;
 use App\Exceptions\Tools\ToolServerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tools\ServerResponseRequest;
-use App\Services\Response\ToolJsonResponseInterface;
-use App\Services\Tools\ServerResponse\ServerResponseToolInterface;
-use App\Services\Tools\ServerResponse\View\ServerResponseHtmlViewInterface;
+use App\Services\Response\ToolJsonResponse;
+use App\Services\Tools\ServerResponse\ServerResponseTool;
+use App\Services\Tools\ServerResponse\View\ServerResponseHtmlView;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\View;
 class ServerResponseController extends Controller
 {
     private string $toolKey = 'server_response';
-    private ServerResponseToolInterface $toolService;
-    private ToolJsonResponseInterface $responseService;
-    private ServerResponseHtmlViewInterface $viewService;
+    private ServerResponseTool $toolService;
+    private ToolJsonResponse $responseService;
+    private ServerResponseHtmlView $viewService;
 
     public function __construct(
-        ServerResponseToolInterface $toolService,
-        ToolJsonResponseInterface $responseService,
-        ServerResponseHtmlViewInterface $viewService
+        ServerResponseTool $toolService,
+        ToolJsonResponse $responseService,
+        ServerResponseHtmlView $viewService
     ) {
         $this->toolService = $toolService;
         $this->responseService = $responseService;

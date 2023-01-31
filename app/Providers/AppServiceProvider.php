@@ -4,12 +4,12 @@ namespace App\Providers;
 
 use App\Services\Http\HttpRequest\CurlRequest;
 use App\Services\Http\HttpRequest\HttpRequest;
-use App\Services\Response\ToolJsonResponseInterface;
 use App\Services\Response\ToolJsonResponse;
+use App\Services\Response\ToolJsonResponseImpl;
+use App\Services\Tools\ServerResponse\ServerResponseImpl;
 use App\Services\Tools\ServerResponse\ServerResponseTool;
-use App\Services\Tools\ServerResponse\ServerResponseToolInterface;
+use App\Services\Tools\ServerResponse\View\ServerResponseHtmlViewImpl;
 use App\Services\Tools\ServerResponse\View\ServerResponseHtmlView;
-use App\Services\Tools\ServerResponse\View\ServerResponseHtmlViewInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,9 +32,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // DI
-        $this->app->bind(ServerResponseToolInterface::class, ServerResponseTool::class);
-        $this->app->bind(ToolJsonResponseInterface::class, ToolJsonResponse::class);
-        $this->app->bind(ServerResponseHtmlViewInterface::class, ServerResponseHtmlView::class);
+        $this->app->bind(ServerResponseTool::class, ServerResponseImpl::class);
+        $this->app->bind(ToolJsonResponse::class, ToolJsonResponseImpl::class);
+        $this->app->bind(ServerResponseHtmlView::class, ServerResponseHtmlViewImpl::class);
         $this->app->bind(HttpRequest::class, function ($app, $args){
             return new CurlRequest(...$args);
         });
