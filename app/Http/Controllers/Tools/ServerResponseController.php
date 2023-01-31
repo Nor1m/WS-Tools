@@ -19,13 +19,11 @@ class ServerResponseController extends Controller
     private ToolJsonResponseInterface $responseService;
     private ServerResponseHtmlViewInterface $viewService;
 
-    /**
-     * @param ServerResponseToolInterface $toolService
-     * @param ToolJsonResponseInterface $responseService
-     * @param ServerResponseHtmlViewInterface $viewService
-     */
-    public function __construct(ServerResponseToolInterface $toolService, ToolJsonResponseInterface $responseService, ServerResponseHtmlViewInterface $viewService)
-    {
+    public function __construct(
+        ServerResponseToolInterface $toolService,
+        ToolJsonResponseInterface $responseService,
+        ServerResponseHtmlViewInterface $viewService
+    ) {
         $this->toolService = $toolService;
         $this->responseService = $responseService;
         $this->viewService = $viewService;

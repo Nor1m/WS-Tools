@@ -8,14 +8,14 @@ class CurlRequest implements HttpRequest
 {
     private null|false|CurlHandle $handle = null;
 
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->handle = curl_init($url);
     }
 
-    public function setOption($name, $value): void
+    public function setOption($name, $value): bool
     {
-        curl_setopt($this->handle, $name, $value);
+        return curl_setopt($this->handle, $name, $value);
     }
 
     public function exec(): bool|string
