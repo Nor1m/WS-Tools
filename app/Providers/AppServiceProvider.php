@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Http\HttpRequest\CurlRequest;
+use App\Services\Http\HttpRequest\HttpRequest;
 use App\Services\Response\ToolJsonResponseInterface;
 use App\Services\Response\ToolJsonResponse;
 use App\Services\Tools\ServerResponse\ServerResponseTool;
@@ -33,5 +35,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ServerResponseToolInterface::class, ServerResponseTool::class);
         $this->app->bind(ToolJsonResponseInterface::class, ToolJsonResponse::class);
         $this->app->bind(ServerResponseHtmlViewInterface::class, ServerResponseHtmlView::class);
+        $this->app->bind(HttpRequest::class, CurlRequest::class);
     }
 }
