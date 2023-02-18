@@ -59,13 +59,13 @@ class ServerResponseToolImpl implements ServerResponseTool
         $info = $response->transferStats->getHandlerStats();
         $headers = $response->headers();
 
-        $httpCode = $info['http_code'];
-        $this->totalTime += $info['total_time'];
+        $httpCode = $info['http_code'] ?? $response->status();
+        $this->totalTime += $info['total_time'] ?? 0;
 
         if (empty($this->baseServerInfo)) {
             $this->baseServerInfo = [
-                'primary_ip' => $info['primary_ip'],
-                'local_ip' => $info['local_ip'],
+                'primary_ip' => $info['primary_ip'] ?? '',
+                'local_ip' => $info['local_ip'] ?? '',
             ];
         }
 
@@ -73,7 +73,7 @@ class ServerResponseToolImpl implements ServerResponseTool
             url: $url,
             httpCode: $httpCode,
             response: $this->getHeadersString($headers),
-            totalTime: $info['total_time']
+            totalTime: $info['total_time'] ?? 0
         );
 
         if (isset($info['redirect_url']) && in_array($httpCode, $this->redirectCodes)) {

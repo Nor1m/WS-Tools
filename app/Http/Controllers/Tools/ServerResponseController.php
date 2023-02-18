@@ -10,6 +10,7 @@ use App\Services\Tools\ServerResponse\ServerResponseTool;
 use App\Services\Tools\ServerResponse\View\ServerResponseHtmlView;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
 class ServerResponseController extends Controller
@@ -39,6 +40,7 @@ class ServerResponseController extends Controller
         } catch (ToolServerException $exception) {
             return $this->responseService->response([], 'error', $exception->getMessage(), $exception->getCode());
         } catch (Exception $exception) {
+            Log::error('ServerResponseController::run', ['error' => $exception->getMessage()]);
             return $this->responseService->response([], 'error', __('response.something_went_wrong'), 500);
         }
     }

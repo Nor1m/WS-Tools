@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tools;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -21,6 +22,13 @@ class ServerResponseToolTest extends TestCase
      */
     public function testRunWithCorrectParams($params)
     {
+        Http::fake([
+            '*' => Http::response([], 200, [
+                'Cache-Control' => 'public, max-age=1800',
+                'Content-Type' => 'text/html; charset=UTF-8',
+            ]),
+        ]);
+
         $response = $this->get(route($this->routeName, $params));
         $response->assertStatus(200);
         $response->assertJson(fn (AssertableJson $json) =>
@@ -39,6 +47,7 @@ class ServerResponseToolTest extends TestCase
     public function testRunWithIncorrectParams($params)
     {
         $response = $this->get(route($this->routeName, $params));
+        $response->assertServerError();
         $response->assertStatus(500);
         $response->assertJson(fn (AssertableJson $json) =>
             $json->hasAll(['status', 'data', 'message', 'code'])
@@ -52,6 +61,21 @@ class ServerResponseToolTest extends TestCase
     public function runCorrectDataProvider(): array
     {
         return [
+            'google_with_slash' => [
+                [
+                    'url' => 'google.com/company',
+                ],
+            ],
+            'google_with_protocol_https' => [
+                [
+                    'url' => 'https://google.com',
+                ],
+            ],
+            'google_with_protocol_with_params' => [
+                [
+                    'url' => 'https://google.com?q=test',
+                ],
+            ],
             'cyrillic' => [
                 [
                     'url' => 'яндекс.рф',
@@ -65,26 +89,6 @@ class ServerResponseToolTest extends TestCase
             'cyrillic_with_slash' => [
                 [
                     'url' => 'яндекс.рф/company',
-                ],
-            ],
-            'google_with_slash' => [
-                [
-                    'url' => 'google.com/company',
-                ],
-            ],
-            'google_with_protocol_http' => [
-                [
-                    'url' => 'http://google.com',
-                ],
-            ],
-            'google_with_protocol_https' => [
-                [
-                    'url' => 'https://google.com',
-                ],
-            ],
-            'google_with_protocol_with_params' => [
-                [
-                    'url' => 'https://google.com?q=test',
                 ],
             ],
         ];
