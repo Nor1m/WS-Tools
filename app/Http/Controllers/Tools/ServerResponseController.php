@@ -15,21 +15,43 @@ use Illuminate\Support\Facades\View;
 
 class ServerResponseController extends Controller
 {
+    /**
+     * @var string
+     */
     private string $toolKey = 'server_response';
+    /**
+     * @var ServerResponseTool
+     */
     private ServerResponseTool $toolService;
+    /**
+     * @var ToolJsonResponse
+     */
     private ToolJsonResponse $responseService;
+    /**
+     * @var ServerResponseHtmlView
+     */
     private ServerResponseHtmlView $viewService;
 
+    /**
+     * @param ServerResponseTool $toolService
+     * @param ToolJsonResponse $responseService
+     * @param ServerResponseHtmlView $viewService
+     */
     public function __construct(
-        ServerResponseTool $toolService,
-        ToolJsonResponse $responseService,
+        ServerResponseTool     $toolService,
+        ToolJsonResponse       $responseService,
         ServerResponseHtmlView $viewService
-    ) {
+    )
+    {
         $this->toolService = $toolService;
         $this->responseService = $responseService;
         $this->viewService = $viewService;
     }
 
+    /**
+     * @param ServerResponseRequest $request
+     * @return JsonResponse
+     */
     public function run(ServerResponseRequest $request): JsonResponse
     {
         try {
@@ -45,6 +67,9 @@ class ServerResponseController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\View
+     */
     public function show(): \Illuminate\Contracts\View\View
     {
         $view = toolSettings($this->toolKey, 'page_view_path');

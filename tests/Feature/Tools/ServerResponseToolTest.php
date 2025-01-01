@@ -31,12 +31,11 @@ class ServerResponseToolTest extends TestCase
 
         $response = $this->get(route($this->routeName, $params));
         $response->assertStatus(200);
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->hasAll(['status', 'data', 'message', 'code'])
-                ->where('status', 'success')
-                ->whereType('data.resultHtml', 'string')
-                ->where('message', '')
-                ->where('code', 200)
+        $response->assertJson(fn(AssertableJson $json) => $json->hasAll(['status', 'data', 'message', 'code'])
+            ->where('status', 'success')
+            ->whereType('data.resultHtml', 'string')
+            ->where('message', '')
+            ->where('code', 200)
         );
     }
 
@@ -49,8 +48,7 @@ class ServerResponseToolTest extends TestCase
         $response = $this->get(route($this->routeName, $params));
         $response->assertServerError();
         $response->assertStatus(500);
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->hasAll(['status', 'data', 'message', 'code'])
+        $response->assertJson(fn(AssertableJson $json) => $json->hasAll(['status', 'data', 'message', 'code'])
             ->where('status', 'error')
             ->where('data', [])
             ->where('message', __('response.server_is_not_responding'))
@@ -98,14 +96,14 @@ class ServerResponseToolTest extends TestCase
     {
         return [
             'simple_text' => [
-                 [
-                     'url' => 'test',
-                 ]
+                [
+                    'url' => 'test',
+                ]
             ],
             'wrong_url' => [
-                 [
-                     'url' => 'wrong.wrong',
-                 ]
+                [
+                    'url' => 'wrong.wrong',
+                ]
             ],
         ];
     }
