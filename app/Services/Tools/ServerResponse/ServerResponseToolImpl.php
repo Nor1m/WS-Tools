@@ -8,13 +8,34 @@ use Illuminate\Support\Facades\Http;
 
 class ServerResponseToolImpl implements ServerResponseTool
 {
+    /**
+     * @var string
+     */
     private string $toolKey = 'server_response';
+    /**
+     * @var int|mixed
+     */
     private int $maxCurlRequests = 15;
-    private array $redirectCodes = [301,302,303];
+    /**
+     * @var array|int[]|mixed
+     */
+    private array $redirectCodes = [301, 302, 303];
+    /**
+     * @var array
+     */
     private array $baseServerInfo = [];
+    /**
+     * @var int
+     */
     private int $curlLoops = 0;
+    /**
+     * @var array
+     */
     private array $curlServerResponses = [];
-    private float $totalTime = 0;
+    /**
+     * @var float|int
+     */
+    private float|int $totalTime = 0;
 
     public function __construct()
     {
@@ -43,16 +64,28 @@ class ServerResponseToolImpl implements ServerResponseTool
         );
     }
 
+    /**
+     * @param string $url
+     * @return string
+     */
     protected function prepareUrl(string $url): string
     {
         return addProtocolIfNotExists(punycodeEncode($url));
     }
 
+    /**
+     * @param string $url
+     * @return void
+     */
     protected function startCurlParsing(string $url): void
     {
         $this->curlRedirectWalk($url);
     }
 
+    /**
+     * @param string $url
+     * @return void
+     */
     protected function curlRedirectWalk(string $url): void
     {
         $response = Http::withoutRedirecting()->get($url);
@@ -86,6 +119,10 @@ class ServerResponseToolImpl implements ServerResponseTool
         }
     }
 
+    /**
+     * @param array $headers
+     * @return string
+     */
     protected function getHeadersString(array $headers): string
     {
         $headersString = '';

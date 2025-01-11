@@ -6,8 +6,15 @@ use App\Services\Tools\ServerResponse\ServerResponseResultDTO;
 
 class ServerResponseHtmlViewImpl implements ServerResponseHtmlView
 {
+    /**
+     * @var string
+     */
     private string $toolKey = 'server_response';
 
+    /**
+     * @param ServerResponseResultDTO $dto
+     * @return string
+     */
     public function response(ServerResponseResultDTO $dto): string
     {
         $viewKey = toolSettings($this->toolKey, 'items_view_path', '');
